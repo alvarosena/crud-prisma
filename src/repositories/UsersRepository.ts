@@ -12,18 +12,30 @@ class UsersRepository implements IUsersRepository {
     const user = await this.prisma.user.create({
       data: {
         username: username,
-        password: password
+        password: password,
       }
     });
   }
 
-  // async findByUsername(username: string) {
-  //   const user = await this.prisma.user.findUnique({
-  //     where: {
-  //       username: username
-  //     }
-  //   })
-  // }
+  async findByUsername(username: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username: username
+      },
+      select: {
+        username: true
+      }
+    });
+  }
+
+  async findById(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: String(id),
+      },
+    });
+    return user;
+  }
 
 }
 
