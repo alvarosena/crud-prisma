@@ -1,6 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "../repositories/IUsersRepository";
 
+interface IRequest {
+  id: string,
+}
+
 @injectable()
 class GetUserByIdService {
   constructor(
@@ -8,10 +12,9 @@ class GetUserByIdService {
     private usersRepository: IUsersRepository
   ) { }
 
-  async execute(id: string) {
+  async execute({ id }: IRequest) {
     const user = await this.usersRepository.findById(id);
-
-
+    return user;
   }
 }
 

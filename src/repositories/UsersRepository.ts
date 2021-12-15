@@ -20,12 +20,13 @@ class UsersRepository implements IUsersRepository {
   async findByUsername(username: string) {
     const user = await this.prisma.user.findUnique({
       where: {
-        username: username
+        username: String(username)
       },
       select: {
         username: true
       }
     });
+    return user;
   }
 
   async findById(id: string) {
@@ -33,6 +34,10 @@ class UsersRepository implements IUsersRepository {
       where: {
         id: String(id),
       },
+      select: {
+        id: true,
+        username: true,
+      }
     });
     return user;
   }

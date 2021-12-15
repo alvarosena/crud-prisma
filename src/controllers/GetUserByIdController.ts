@@ -9,8 +9,7 @@ class GetUserByIdController {
 
     const getUserByIdService = container.resolve(GetUserByIdService);
 
-    const user = await getUserByIdService.execute(id)
-
+    const user = await getUserByIdService.execute({ id });
     return response.json(user);
   }
 }
