@@ -4,6 +4,12 @@ import { response } from "express";
 import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "../repositories/IUsersRepository";
 
+interface IRequest {
+  username: string,
+  email: string,
+  password: string,
+}
+
 @injectable()
 class CreateUserService {
   constructor(
@@ -11,18 +17,11 @@ class CreateUserService {
     private usersRepository: IUsersRepository
   ) { }
 
-  async execute(username: string, password: string) {
-    const userAlreadyExists = await this.usersRepository.findByUsername(username);
-
-    if (userAlreadyExists) {
-      return response.status(400).json({
-        message: "User already exists"
-      })
-    }
+  async execute({ username, email, password }: IRequest) {
 
     const hashPassword = await hash(password, 10);
 
-    const user = await this.usersRepository.create(username, hashPassword);
+    const user = await this.usersRepository.create(username, email, hashPassword);
   }
 }
 

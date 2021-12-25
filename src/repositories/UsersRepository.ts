@@ -1,4 +1,4 @@
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient, User } from ".prisma/client";
 import { IUsersRepository } from "./IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
@@ -8,22 +8,27 @@ class UsersRepository implements IUsersRepository {
     this.prisma = new PrismaClient();
   }
 
-  async create(username: string, password: string): Promise<void> {
+  async create(username: string, email: string, password: string): Promise<void> {
     const user = await this.prisma.user.create({
       data: {
         username: username,
-        password: password,
+        email: email,
+        password: password
       }
     });
   }
 
-  async findByUsername(username: string) {
+  async findByEmail(email: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: {
-        username: String(username)
+        email: String(email)
       },
       select: {
-        username: true
+        email: true,
+        id: true,
+        password: true,
+        username: true,
+        created_at: true,
       }
     });
     return user;
@@ -36,7 +41,6 @@ class UsersRepository implements IUsersRepository {
       },
       select: {
         id: true,
-        username: true,
       }
     });
     return user;
