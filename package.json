@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "dist node src/app.js",
+    "start": "./dist node src/app.js",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/app.ts"
   },
   "engines": {
