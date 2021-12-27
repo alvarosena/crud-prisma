@@ -1,12 +1,19 @@
 import { compare } from "bcrypt";
-import { request, response } from "express";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "../repositories/IUsersRepository";
 
 interface IRequest {
-  email: string,
-  password: string,
+  email: string;
+  password: string;
+}
+
+interface IResponse {
+  user: {
+    username: string;
+    email: string;
+  },
+  token: string;
 }
 
 @injectable()
@@ -20,21 +27,29 @@ class AuthenticateUserService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      return response.json({ message: "User not found" });
+      throw new Error("Email or password is incorrect");
     }
 
     const passwordMatch = compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error("Password don't match.");
+      throw new Error("Email or password are incorrect!");
     }
 
-
-    const token = sign({}, "8edb164dffe2b7066c410e45f3d20bb4", {
+    const token = sign({}, "c4a4acd7826638c938c6ff143a2bb72b", {
       subject: user.id,
-    });
+    })
 
-    return token;
+    const tokenReturn: IResponse = {
+      token,
+      user: {
+        username: user.username,
+        email: user.email,
+      }
+    }
+
+    return tokenReturn;
+
   }
 }
 

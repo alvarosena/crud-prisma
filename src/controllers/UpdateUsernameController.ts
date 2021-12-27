@@ -5,10 +5,10 @@ import { UpdateUsernameService } from '../services/UpdateUsernameService';
 class UpdateUsernameController {
   async handle(request: Request, response: Response) {
     const { id } = request.params;
-    const { username } = request.body;
+    const { username, password } = request.body;
 
     const updateUsernameService = container.resolve(UpdateUsernameService);
-    const user = await updateUsernameService.execute(username, id);
+    const user = await updateUsernameService.execute(username, id, password);
 
     return response.json(user);
   }

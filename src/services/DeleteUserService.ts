@@ -16,7 +16,11 @@ class DeleteUserService {
       throw new Error('User not found!');
     }
 
-    compare(password, user.password)
+    const passwordMatch = compare(password, user.password);
+
+    if (!passwordMatch) {
+      throw new Error("Error: Password don't match!");
+    }
 
     const deleteUser = await this.usersRepository.deleteUser(id);
     return deleteUser;
