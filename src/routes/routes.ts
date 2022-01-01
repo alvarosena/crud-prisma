@@ -20,7 +20,7 @@ routes.post('/api/users', createUserController.handle);
 routes.get('/api/users/:id', ensureAuthenticated, getUserByIdController.handle);
 routes.post('/api/users/sessions', authenticateUserController.handle);
 routes.get('/api/users', listAllUsersController.handle);
-routes.patch('/api/users/update/:id', ensureAuthenticated, updateUsernameController.handle);
+routes.patch('/api/users/update', ensureAuthenticated, updateUsernameController.handle);
 routes.delete('/api/users/delete/:id', ensureAuthenticated, deleteUserController.handle);
 
 export { routes }
